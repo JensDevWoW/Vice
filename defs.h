@@ -6,6 +6,8 @@ typedef unsigned long long U64;
 #define NAME "Vypre 1.0"
 #define BRD_SQ_NUM 120
 
+#define MAXGAMEMOVES 2048
+
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN ,bB, bR, bQ, bK };
 enum { FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE };
 enum { RANK_1, RANK_2, RANK_3, RANK_4, RANK_5, RANK_6, RANK_7, RANK_8, RANK_NONE };
@@ -21,6 +23,17 @@ enum {
     A7 = 81, B7, C7, D7, E7, F7, G7, H7,
     A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQ
 };
+enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 };
+
+typedef struct {
+
+    int move;
+    int castlePerm;
+    int enPas;
+    int fiftyMove;
+    U64 posKey;
+
+} S_UNDO;
 
 /* Board Structure */
 typedef struct {
@@ -37,12 +50,16 @@ typedef struct {
     int ply;
     int hisPly;
 
+    int castlePerm;
+
     U64 posKey;
 
     int pceNum[13];
     int bigPce[3];
     int majPce[3];
     int minPce[3];
+
+    S_UNDO history[MAXGAMEMOVES]
 
 } S_BOARD ;
 

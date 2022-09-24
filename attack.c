@@ -11,6 +11,9 @@ int SqAttacked(const int sq, const int side, const S_BOARD *pos)
 {
     int pce, index, t_sq, dir;
 
+    if (!SqOnBoard(sq) || !SideValid(side) || !CheckBoard(pos))
+        printf("Error 11");
+
     // pawns
     if (side == WHITE)
     {

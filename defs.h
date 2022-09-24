@@ -37,7 +37,7 @@ typedef struct {
 
 typedef struct {
 
-    S_MOVES moves[MAXPOSITIONMOVES];
+    S_MOVE moves[MAXPOSITIONMOVES];
     int count;
 
 } S_MOVELIST;
@@ -171,5 +171,12 @@ extern void AddQuietMove(const S_BOARD *pos, int move, S_MOVELIST *list);
 extern void AddCaptureMove(const S_BOARD *pos, int move, S_MOVELIST *list);
 extern void AddEnPassantMove(const S_BOARD *pos, int move, S_MOVELIST *list);
 extern void GenerateAllMoves(const S_BOARD *pos, S_MOVELIST *list);
+
+// validate.c
+extern int SqOnBoard(const int sq);
+extern int SideValid(const int side);
+extern int FileRankValid(const int fr);
+extern int PieceValidEmpty(const int pce);
+extern int PieceValid(const int pce);
 
 #endif

@@ -2,28 +2,17 @@
 #include "stdlib.h"
 #include "defs.h"
 
-void ShowSqAtBySide(const int side, const S_BOARD *pos)
+void PrintBin(int move) 
 {
-    int rank = 0;
-    int file = 0;
-    int sq = 0;
-
-    printf("\n\nSquares attacked by:%c\n", SideChar[side]);
-    for(rank = RANK_8; rank >= RANK_1; --rank)
+    int index = 0;
+    printf("AS binary:\n");
+    for(index = 27; index >= 0; index--)
     {
-        for(file = FILE_A; file <= FILE_H; ++file)
-        {
-            sq = FR2SQ(file, rank);
-            if(SqAttacked(sq, side, pos) == TRUE)
-            {
-                printf("X");
-            } else {
-                printf("-");
-            }
-        }
-        printf("\n");
+        if((1<<index)&move) printf("1");
+        else printf("0");
+        if(index!=28&&index%4==0) printf(" ");
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 int main()
@@ -32,12 +21,7 @@ int main()
     S_BOARD board[1];
 
     ParseFen(START_FEN, board);
-    printf("\n\nWhite Attacking:\n");
-
-    ShowSqAtBySide(WHITE, board);
-
-    printf("\n\nBlack Attacking:\n");
-    ShowSqAtBySide(BLACK, board);
+    PrintBoard(board);
 
     return 0;
 }

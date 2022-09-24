@@ -3,6 +3,85 @@
 #include "stdio.h"
 #include "defs.h"
 
+int CheckBoard(const S_BOARD *pos)
+{
+    int t_pceNum[13] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    int t_bigPce[2] = { 0, 0 };
+    int t_majPce[2] = { 0, 0 };
+    int t_minPce[2] = { 0, 0 };
+    int t_material[2] = { 0, 0 };
+
+    int sq64,t_piece,t_pce_num,sq120,color,pcount;
+
+    U64 t_pawns[3] = {0ULL, 0ULL, 0ULL};
+
+    t_pawns[WHITE] = pos->pawns[WHITE];
+    t_pawns[BLACK] = pos->pawns[BLACK];
+    t_pawns[BOTH] = pos->pawns[BOTH];
+
+    for(t_piece = wP; t_piece <= bK; ++t_piece)
+    {
+        for(t_pce_num = 0; t_pce_num < pos->pceNum[t_piece]; ++t_pce_num)
+        {
+            sq120 = pos->pList[t_piece][t_pce_num];
+            if (pos->pieces[sq120] != t_piece)
+                return 1;
+        }
+    }
+
+    for(sq64 = 0; sq64 < 64; ++sq64)
+    {
+        sq120 = SQ120(sq64);
+        t_piece = pos->pieces[sq120];
+        t_pceNum[t_piece]++;
+        color = PieceCol[t_piece];
+        if (PieceBig[t_piece] == TRUE) t_bigPce[color]++;
+        if (PieceMin[t_piece] == TRUE) t_minPce[color]++;
+        if (PieceMaj[t_piece] == TRUE) t_majPce[color]++;
+
+        t_material[color] += PieceVal[t_piece];
+    }
+
+    for (t_piece = wP; t_piece <= bK; ++t_piece)
+    {
+        if (t_pceNum[t_piece] != pos->pceNum[t_piece])
+            return 2;
+    }
+
+    pcount = CNT(t_pawns[WHITE]);
+    if (pcount != pos->pceNum[wP])
+        return 3;
+    pcount = CNT(t_pawns[BLACK]);
+    if (pcount != pos->pceNum[bP])
+        return 4;
+    pcount = CNT(t_pawns[BOTH]);
+    if (pcount != (pos->pceNum[bP] + pos->pceNum[wP]))
+        return 5;
+
+    while(t_pawns[WHITE])
+    {
+        sq64 = POP(&t_pawns[WHITE]);
+        if (pos->pieces[SQ120(sq64)] != wP)
+            return 6;
+    }
+
+    while(t_pawns[BLACK])
+    {
+        sq64 = POP(&t_pawns[BLACK]);
+        if (pos->pieces[SQ120(sq64)] != bP)
+            return 7;
+    }
+
+    while(t_pawns[BOTH])
+    {
+        sq64 = POP(&t_pawns[BOTH]);
+        if (pos->pieces[SQ120(sq64)] != bP || pos->pieces[SQ120(sq64)] != wP)
+            return 8;
+    }    
+
+    return 0;
+}
+
 void UpdateListsMaterial(S_BOARD *pos)
 {
     int piece, sq, index, color;
@@ -26,6 +105,16 @@ void UpdateListsMaterial(S_BOARD *pos)
 
             if (piece==wK) pos->KingSq[WHITE] = sq;
             if (piece==bK) pos->KingSq[BLACK] = sq;
+
+            if (piece==wP)
+            {
+                SETBIT(pos->pawns[WHITE], SQ64(sq));
+                SETBIT(pos->pawns[BOTH], SQ64(sq));
+            } else if(piece == bP)
+            {
+                SETBIT(pos->pawns[BLACK], SQ64(sq));
+                SETBIT(pos->pawns[BOTH], SQ64(sq));
+            }
         }
     }
 }

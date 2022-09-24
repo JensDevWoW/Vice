@@ -98,7 +98,7 @@ extern int CountBits(U64 b);
 
 // hashkeys.c
 extern U64 GeneratePosKey(const S_BOARD *pos);
-
+extern int Parse_Fen(char *fen, S_BOARD *pos);
 // board.c
 extern void ResetBoard(S_BOARD *pos);
 

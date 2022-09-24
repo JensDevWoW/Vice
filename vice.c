@@ -4,18 +4,17 @@
 int main()
 {
     AllInit();
-    int index = 0;
-    for(index = 0; index < BRD_SQ_NUM; ++index)
+    U64 playBitBoard = 0ULL;
+    playBitBoard |= (1ULL << SQ64(D2));
+    playBitBoard |= (1ULL << SQ64(D3));
+    playBitBoard |= (1ULL << SQ64(D4));
+    int sq64 = 0;
+    while (playBitBoard)
     {
-        if(index%10==0) printf("\n");
-        printf("%5d", Sq120ToSq64[index]);
+        sq64 = POP(playBitBoard);
+
+        printf("Popped:%d", sq64);
     }
-    printf("\n");
-    printf("\n");
-    for(index = 0; index < 64; ++index)
-    {
-        if(index%8 == 0) printf("\n");
-        printf("%5d", Sq64ToSq120[index]);
-    }
+
     return 0;
 }

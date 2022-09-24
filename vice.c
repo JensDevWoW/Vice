@@ -5,8 +5,10 @@
 int main()
 {
     AllInit();
-    int index = 0;
-    U64 playBitBoard = 0ULL;
+    S_BOARD board[1];
+
+    ParseFen(START_FEN, board);
+    PrintBoard(board);
     
     return 0;
 }

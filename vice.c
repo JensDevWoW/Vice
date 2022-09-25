@@ -12,10 +12,10 @@ int main() {
 	AllInit();		
 	
 	S_BOARD board[1];
-	S_MOVELIST list[1];
+	//S_MOVELIST list[1];
 	
 	ParseFen(PERFTFEN,board);
-	PerftTest(3,board);
+	PerftTest(4,board);
 	
 	return 0;
 }

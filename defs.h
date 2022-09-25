@@ -3,7 +3,7 @@
 
 #include "stdlib.h"
 
-#define DEBUG
+//#define DEBUG
 
 #ifndef DEBUG
 #define ASSERT(n)
@@ -173,7 +173,7 @@ extern int PieceSlides[13];
 /* FUNCTIONS */
 
 // init.c
-extern void AllInit();
+extern void AllInit( void );
 
 // bitboards.c
 extern void PrintBitBoard(U64 bb);
